@@ -7,7 +7,7 @@ console.log("TN election data collection");
 
 var parseElectionResults = function (year, filename, callback) {
     fs.readFile(filename, "utf8", function (err, data) {
-        if (year === 1967) {
+        if (year === 1967 || year === 1971) {
             data = data.split("rptConstituencySummary - Page 234 of 234")[1];
             var CandidateNamememory = [];
             var ConstituencyID = "";
@@ -53,7 +53,10 @@ var parseElectionResults = function (year, filename, callback) {
         callback();
     });
 }
-parseElectionResults(1967, "input/txt/1967.txt", function () {
+parseElectionResults(1971, "input/txt/1971.txt", ReportResult)
+
+function ReportResult() {
+
     console.log("Candidates by Gender");
     _.each(_.groupBy(candidates, function (o) {
         return o.Gender
@@ -78,4 +81,4 @@ parseElectionResults(1967, "input/txt/1967.txt", function () {
         return o.TotalVotes
     }))
     console.log("Total Contestants", candidates.length)
-})
+}
