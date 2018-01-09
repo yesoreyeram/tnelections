@@ -1,0 +1,21 @@
+{
+  "name": "tnelection_data_collection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "cheerio": "^1.0.0-rc.2",
+    "csv": "^2.0.0",
+    "fs-extra": "^5.0.0",
+    "lodash": "^4.17.4",
+    "pdf2json": "^1.1.7",
+    "request": "^2.83.0"
+  }
+}
