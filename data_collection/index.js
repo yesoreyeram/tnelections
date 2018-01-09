@@ -7,7 +7,7 @@ console.log("TN election data collection");
 
 var parseElectionResults = function (year, filename, callback) {
     fs.readFile(filename, "utf8", function (err, data) {
-        if (year === 1967 || year === 1971 || year === 1977) {
+        if (year === 1967 || year === 1971 || year === 1977 || year === 1980) {
             data = data.split("rptConstituencySummary - Page 234 of 234")[1];
             var CandidateNamememory = [];
             var ConstituencyID = "";
@@ -53,8 +53,7 @@ var parseElectionResults = function (year, filename, callback) {
         callback();
     });
 }
-parseElectionResults(1977, "input/txt/1977.txt", ReportResult)
-
+parseElectionResults(1980, "input/txt/1980.txt", ReportResult);
 function ReportResult() {
     console.log("Candidates by Party");
     _.each(_.groupBy(candidates, function (o) {
@@ -80,4 +79,5 @@ function ReportResult() {
     }), (k, v) => {
         console.log(v, k.length)
     });
+    console.log("Candidate with maximum votes",_.maxBy(candidates,(o)=>{ return o.TotalVotes}))
 }
