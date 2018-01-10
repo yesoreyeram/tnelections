@@ -7,13 +7,31 @@ console.log("TN election data collection");
 
 var parseElectionResults = function (year, filename, callback) {
     fs.readFile(filename, "utf8", function (err, data) {
-        if (year === 1967 || year === 1971 || year === 1977 || year === 1980) {
+        if (year === 1967) {
             data = data.split("rptConstituencySummary - Page 234 of 234")[1];
             var CandidateNamememory = [];
             var ConstituencyID = "";
             var Constituency = "";
             _.each(data.split("\n"), function (line) {
-                if (["No. CANDIDATE SEX PARTY VOTES %", "No. CANDIDATE SEX PARTY VOTES %", "CANDIDATE NAME SEX AGE CATEGORY PARTY GENERAL POSTAL TOTAL", "VALID VOTES POLLED", "Election Commission of India- State Election, 2016 to the Legislative Assembly Of Tamil Nadu", "DETAILED RESULTS", "% VOTES", "POLLED"].indexOf(line.trim()) > -1) {} else if (line.indexOf("AGE CATEGORY PARTY GENERAL POSTAL TOTAL") > -1) {} else if (line.indexOf("TURNOUT TOTAL") > -1) {} else if (line.indexOf("GRAND TOTAL") > -1) {} else if (line.indexOf("Page ") === 0) {} else if (line.indexOf("Election Commission of India") === 0) {} else if (line.indexOf("ELECTORS : ") === 0) {} else if (line.indexOf("Constituency ") > -1) {
+                if (["No. CANDIDATE SEX PARTY VOTES %", "No. CANDIDATE SEX PARTY VOTES %", "CANDIDATE NAME SEX AGE CATEGORY PARTY GENERAL POSTAL TOTAL", "VALID VOTES POLLED", "Election Commission of India- State Election, 2016 to the Legislative Assembly Of Tamil Nadu", "DETAILED RESULTS", "% VOTES", "POLLED"].indexOf(line.trim()) > -1) {
+
+                } else if (line.indexOf("AGE CATEGORY PARTY GENERAL POSTAL TOTAL") > -1) {
+
+                } else if (line.indexOf("TURNOUT TOTAL") > -1) {
+
+                } else if (line.indexOf("GRAND TOTAL") > -1) {
+
+                } else if (line.indexOf("rptDetailedResults") > -1) {
+
+                } else if (line.split(" ").length === 1 && (!isNaN(parseInt(line)))) {
+
+                } else if (line.indexOf("Page ") === 0) {
+
+                } else if (line.indexOf("Election Commission of India") === 0) {
+
+                } else if (line.indexOf("ELECTORS : ") === 0) {
+
+                } else if (line.indexOf("Constituency ") > -1) {
                     Constituency = line.split(" ").slice(2).join(" ").trim();
                     ConstituencyID = line.split(" ")[1];
                 } else {
@@ -35,6 +53,7 @@ var parseElectionResults = function (year, filename, callback) {
                             myarray.shift();
                             candidate.Name = myarray.join(" ");
                         }
+                        if(candidate.Name.trim().indexOf(".")===0) candidate.Name = candidate.Name.trim().replace(".","");
                         candidate.YearOfElection = year;
                         candidate.Constituency = Constituency;
                         candidate.ConstituencyID = ConstituencyID;
@@ -53,7 +72,8 @@ var parseElectionResults = function (year, filename, callback) {
         callback();
     });
 }
-parseElectionResults(1980, "input/txt/1980.txt", ReportResult);
+parseElectionResults(1967, "input/txt/1967.txt", ReportResult);
+
 function ReportResult() {
     console.log("Candidates by Party");
     _.each(_.groupBy(candidates, function (o) {
@@ -79,5 +99,7 @@ function ReportResult() {
     }), (k, v) => {
         console.log(v, k.length)
     });
-    console.log("Candidate with maximum votes",_.maxBy(candidates,(o)=>{ return o.TotalVotes}))
+    console.log("Candidate with maximum votes", _.maxBy(candidates, (o) => {
+        return o.TotalVotes
+    }))
 }
